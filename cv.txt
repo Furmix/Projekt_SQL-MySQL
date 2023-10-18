@@ -1,0 +1,507 @@
+-- tables
+-- Table: Bron
+CREATE TABLE Bron (
+    id_broni integer  NOT NULL,
+    model varchar2(30)  NOT NULL,
+    magazynek integer  NOT NULL,
+    CONSTRAINT Bron_pk PRIMARY KEY (id_broni)
+) ;
+
+-- Table: Cywil
+CREATE TABLE Cywil (
+    Osoba_pesel char(11)  NOT NULL,
+    CONSTRAINT Cywil_pk PRIMARY KEY (Osoba_pesel)
+) ;
+
+-- Table: Koszary
+CREATE TABLE Koszary (
+    Nr_budynku integer  NOT NULL,
+    Liczba_prycz integer  NOT NULL,
+    CONSTRAINT Koszary_pk PRIMARY KEY (Nr_budynku)
+) ;
+
+-- Table: Oddzial
+CREATE TABLE Oddzial (
+    ID_Oddzialu integer  NOT NULL,
+    Nazwa varchar2(30)  NOT NULL,
+    Koszary_Nr_budynku integer  NOT NULL,
+    CONSTRAINT Oddzial_pk PRIMARY KEY (ID_Oddzialu)
+) ;
+
+-- Table: Osoba
+CREATE TABLE Osoba (
+    pesel char(11)  NOT NULL,
+    imie varchar2(30)  NOT NULL,
+    nazwisko varchar2(30)  NOT NULL,
+    adres varchar2(30)  NOT NULL,
+    data_urodzenia date  NOT NULL,
+    Typ varchar2(20)  NOT NULL,
+    CONSTRAINT Osoba_pk PRIMARY KEY (pesel)
+) ;
+
+-- Table: Pensja
+CREATE TABLE Pensja (
+    Osoba_pesel char(11)  NOT NULL,
+    Pensja number(9,2)  NOT NULL,
+    CONSTRAINT Pensja_pk PRIMARY KEY (Osoba_pesel)
+) ;
+
+-- Table: Sprzata
+CREATE TABLE Sprzata (
+    Koszary_Nr_budynku integer  NOT NULL,
+    Cywil_Osoba_pesel char(11)  NOT NULL,
+    CONSTRAINT Sprzata_pk PRIMARY KEY (Koszary_Nr_budynku,Cywil_Osoba_pesel)
+) ;
+
+-- Table: Zolnierz
+CREATE TABLE Zolnierz (
+    Osoba_pesel char(11)  NOT NULL,
+    Oddzial_ID_Oddzialu integer  NOT NULL,
+    data_przysiegi date  NOT NULL,
+    Bron_id_broni integer  NULL,
+    CONSTRAINT Zolnierz_pk PRIMARY KEY (Osoba_pesel)
+) ;
+
+-- foreign keys
+-- Reference: Cywil_Osoba (table: Cywil)
+ALTER TABLE Cywil ADD CONSTRAINT Cywil_Osoba
+    FOREIGN KEY (Osoba_pesel)
+    REFERENCES Osoba (pesel);
+
+-- Reference: Oddzial_Koszary (table: Oddzial)
+ALTER TABLE Oddzial ADD CONSTRAINT Oddzial_Koszary
+    FOREIGN KEY (Koszary_Nr_budynku)
+    REFERENCES Koszary (Nr_budynku);
+
+-- Reference: Pensja_Osoba (table: Pensja)
+ALTER TABLE Pensja ADD CONSTRAINT Pensja_Osoba
+    FOREIGN KEY (Osoba_pesel)
+    REFERENCES Osoba (pesel);
+
+-- Reference: Sprzata_Cywil (table: Sprzata)
+ALTER TABLE Sprzata ADD CONSTRAINT Sprzata_Cywil
+    FOREIGN KEY (Cywil_Osoba_pesel)
+    REFERENCES Cywil (Osoba_pesel);
+
+-- Reference: Sprzata_Koszary (table: Sprzata)
+ALTER TABLE Sprzata ADD CONSTRAINT Sprzata_Koszary
+    FOREIGN KEY (Koszary_Nr_budynku)
+    REFERENCES Koszary (Nr_budynku);
+
+-- Reference: Zolnierz_Bron (table: Zolnierz)
+ALTER TABLE Zolnierz ADD CONSTRAINT Zolnierz_Bron
+    FOREIGN KEY (Bron_id_broni)
+    REFERENCES Bron (id_broni);
+
+-- Reference: Zolnierz_Oddzial (table: Zolnierz)
+ALTER TABLE Zolnierz ADD CONSTRAINT Zolnierz_Oddzial
+    FOREIGN KEY (Oddzial_ID_Oddzialu)
+    REFERENCES Oddzial (ID_Oddzialu);
+
+-- Reference: Zolnierz_Osoba (table: Zolnierz)
+ALTER TABLE Zolnierz ADD CONSTRAINT Zolnierz_Osoba
+    FOREIGN KEY (Osoba_pesel)
+    REFERENCES Osoba (pesel);
+
+-- End of file.
+
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678901','Stanislaw','Kowalski','ul. Polna 5', TO_DATE('1999-02-14', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678902','Bogdan','Nowak','ul. Dolna 7', TO_DATE('2000-03-11', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678903','Marek','Nowak','ul. Kolna 3', TO_DATE('1960-04-17', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678904','Olek','Pak','ul. Zdolna 9', TO_DATE('1970-05-15', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678905','Mateusz','Lak','ul. Namolna 3', TO_DATE('1992-06-14', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678906','Alojzy','Kaczmarek','ul. Zębowska 8', TO_DATE('1992-07-13', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678907','Michal','Baron','ul. Famowska 5', TO_DATE('1967-08-12', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678908','Wojciech','Gola','ul. Famowska 3', TO_DATE('1989-09-11', 'YYYY-MM-DD'),'zol');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678909','Zygmunt','Noga','ul. Kolo 4', TO_DATE('1978-01-14', 'YYYY-MM-DD'),'cyw');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678910','Zdzislaw','Gerwazy','ul. Krzywa 1', TO_DATE('1987-01-14', 'YYYY-MM-DD'),'cyw');
+Insert into S25694.OSOBA (PESEL,IMIE,NAZWISKO,ADRES,DATA_URODZENIA,TYP) values ('12345678911','Helena','Relna','ul. Famowska 1', TO_DATE('1980-02-13', 'YYYY-MM-DD'),'cyw');
+INSERT INTO "S25694"."OSOBA" (PESEL, IMIE, NAZWISKO, ADRES, DATA_URODZENIA, TYP) VALUES ('12345678912', 'Stefan', 'Batory', 'ul. Krosna 5', TO_DATE('1960-01-14', 'YYYY-MM-DD'), 'cyw');
+INSERT INTO "S25694"."OSOBA" (PESEL, IMIE, NAZWISKO, ADRES, DATA_URODZENIA, TYP) VALUES ('12345678913', 'Michał', 'Ory', 'ul. Wiązna 5', TO_DATE('1986-01-15', 'YYYY-MM-DD'), 'cyw');
+INSERT INTO "S25694"."OSOBA" (PESEL, IMIE, NAZWISKO, ADRES, DATA_URODZENIA, TYP) VALUES ('12345678914', 'Arnold', 'Kory', 'ul. Chorza 5', TO_DATE('1999-01-11', 'YYYY-MM-DD'), 'cyw');
+INSERT INTO "S25694"."OSOBA" (PESEL, IMIE, NAZWISKO, ADRES, DATA_URODZENIA, TYP) VALUES ('12345678915', 'Mateusz', 'Sos', 'ul. Skona 3', TO_DATE('1987-01-12', 'YYYY-MM-DD'), 'cyw');
+INSERT INTO "S25694"."OSOBA" (PESEL, IMIE, NAZWISKO, ADRES, DATA_URODZENIA, TYP) VALUES ('12345678916', 'Stefan', 'Klosz', 'ul. Krosna 4', TO_DATE('1996-01-13', 'YYYY-MM-DD'), 'cyw');
+
+
+Insert into S25694.KOSZARY (NR_BUDYNKU,LICZBA_PRYCZ) values ('1','12');
+Insert into S25694.KOSZARY (NR_BUDYNKU,LICZBA_PRYCZ) values ('2','11');
+Insert into S25694.KOSZARY (NR_BUDYNKU,LICZBA_PRYCZ) values ('3','15');
+Insert into S25694.KOSZARY (NR_BUDYNKU,LICZBA_PRYCZ) values ('4','13');
+
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('1', 'Beryl', '30');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('2', 'Beryl', '30');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('3', 'Glock', '17');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('4', 'Glock', '17');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('5', 'Beretta', '8');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('6', 'Beretta', '8');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('7', 'Ak47', '35');
+INSERT INTO "S25694"."BRON" (ID_BRONI, MODEL, MAGAZYNEK) VALUES ('8', 'Beretta', '10');
+
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678909');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678910');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678911');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678912');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678913');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678914');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678915');
+Insert into S25694.CYWIL (OSOBA_PESEL) values ('12345678916');
+
+
+
+Insert into S25694.ODDZIAL (ID_ODDZIALU,NAZWA,KOSZARY_NR_BUDYNKU) values ('1','Bok','1');
+Insert into S25694.ODDZIAL (ID_ODDZIALU,NAZWA,KOSZARY_NR_BUDYNKU) values ('2','Gok','2');
+Insert into S25694.ODDZIAL (ID_ODDZIALU,NAZWA,KOSZARY_NR_BUDYNKU) values ('3','Cmok','3');
+Insert into S25694.ODDZIAL (ID_ODDZIALU,NAZWA,KOSZARY_NR_BUDYNKU) values ('4','Gmok','4');
+
+
+
+
+
+
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678901','5000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678902','6000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678903','7000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678904','1500');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678905','6000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678906','5500');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678907','4700');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678908','4000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678909','5700');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678910','6000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678911','3500');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678912','2500');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678913','11000');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678914','5400');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678915','3400');
+Insert into S25694.PENSJA (OSOBA_PESEL,PENSJA) values ('12345678916','2400');
+
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('1','12345678909');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('2','12345678910');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('2','12345678911');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('3','12345678912');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('1','12345678913');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('1','12345678914');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('2','12345678915');
+Insert into S25694.SPRZATA (KOSZARY_NR_BUDYNKU,CYWIL_OSOBA_PESEL) values ('3','12345678916');
+
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678901','4',TO_DATE('2018-01-13', 'YYYY-MM-DD'), '1');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678902','2',TO_DATE('2019-01-13', 'YYYY-MM-DD'), '2');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678903','3',TO_DATE('1980-01-13', 'YYYY-MM-DD'), '3');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678904','4',TO_DATE('1990-01-13', 'YYYY-MM-DD'), '4');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678905','2',TO_DATE('2011-01-13', 'YYYY-MM-DD'), '5');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678906','3',TO_DATE('2010-01-13', 'YYYY-MM-DD'), '6');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678907','2',TO_DATE('1987-01-13', 'YYYY-MM-DD'), '7');
+Insert into S25694.ZOLNIERZ (OSOBA_PESEL,ODDZIAL_ID_ODDZIALU, data_przysiegi, bron_id_broni) values ('12345678908','4',TO_DATE('2009-01-13', 'YYYY-MM-DD'), '8');
+
+
+
+---------------ZAPYTANIA--------------------------
+
+--a)
+-- Wybierz id broni, model oraz wielkosc magazynku tych broni których  magazynek moze pomiescic ponad 20 naboi 
+select id_broni, model, magazynek 
+from bron 
+where magazynek>20;
+
+--b)
+--Wypisz imiona i nazwiska cywilów którzy sprzataja w koszarach nr 3
+select koszary_nr_budynku, imie, nazwisko from osoba o, sprzata s  
+where o.pesel = s.cywil_osoba_pesel and s.koszary_nr_budynku = 3;
+
+--Wypisz pensje imiona i nazwiska ludzi którzy zarabiaja ponizej 6000
+select pensja, imie, nazwisko 
+from osoba o, pensja p 
+where o.pesel = p.osoba_pesel and p.pensja   < 6000;
+
+
+--Zobacz ile cywilow spzata dane koszary
+select KOSZARY_NR_BUDYNKU as numer_budynku, count(CYWIL_OSOBA_PESEL) as liczba_osob 
+from sprzata
+group by KOSZARY_NR_BUDYNKU;
+
+
+--Znajdź koszary w których sprzata powyzej 2 cywilow
+select KOSZARY_NR_BUDYNKU, COUNT(*) AS ILE_PRACOWNIKOW FROM SPRZATA GROUP BY  KOSZARY_NR_BUDYNKU HAVING COUNT(*) > 2;
+
+--Znajdz id koszar w których jest mniej niz 2 zolnierzy
+select  oddzial_id_oddzialu as id_odddzialu,  count(*) as ile_zolnierzy FROM zolnierz group by oddzial_id_oddzialu having count(*) <5;
+
+
+
+
+
+
+--------------------------PODZAPYTANIA----------------------------------------
+
+
+
+--a1
+--Wypisz wszystkich ludzi którzy sa tym samym typem pracownika co "Sos".
+SELECT o.imie, o.nazwisko
+FROM osoba o 
+WHERE typ = (select o1.typ
+FROM osoba O1
+WHERE o1.nazwisko = 'Sos');
+
+--a2
+--Wypisz zolnierzy którzy mieli przysięgę wcześniej niż zolnierz o nazwisku 'Gola'.
+SELECT o.imie, o.nazwisko, z.data_przysiegi
+FROM osoba o
+INNER JOIN zolnierz z ON o.pesel = z.osoba_pesel
+WHERE z.data_przysiegi < (SELECT z1.data_przysiegi
+FROM zolnierz z1
+INNER JOIN osoba o1 ON o1.pesel = z1.osoba_pesel
+WHERE o1.nazwisko like 'Gola');
+
+
+--b1
+--oblicz jaka jest średnia wielkosc magazynka w bazie wojskowej
+SELECT AVG(total)
+FROM (SELECT SUM(magazynek) AS total
+FROM BRON
+GROUP BY ID_BRONI);
+
+--b2
+--
+
+
+--c1
+--Wypisz wszystkie oddzialy, których suma zolnierzy jest większa niz w oddziale "Cmok".
+SELECT od.nazwa, COUNT(z.osoba_pesel)
+FROM zolnierz z
+INNER JOIN oddzial od ON od.id_oddzialu = z.oddzial_id_oddzialu
+GROUP BY od.nazwa
+HAVING COUNT(z.osoba_pesel) > (SELECT COUNT(z1.osoba_pesel)
+FROM zolnierz z1
+INNER JOIN oddzial od1 ON od1.id_oddzialu = z1.oddzial_id_oddzialu
+WHERE od1.nazwa like 'Cmok');
+
+--c2
+--WYPISZ budynek który ma przypisana taka sama ilosc odzialow co budynek z największa liczba prycz budynek z najwieksza iloscia prycz
+SELECT k.nr_budynku, COUNT(od.id_oddzialu) AS LICZBA
+FROM koszary k
+INNER JOIN oddzial od on k.nr_budynku = od.koszary_nr_budynku
+GROUP BY K.NR_BUDYNKU
+HAVING COUNT(od.id_oddzialu) = (SELECT COUNT(od1.id_oddzialu)
+FROM oddzial od1
+INNER JOIN koszary k1 on k1.nr_budynku = od1.koszary_nr_budynku
+WHERE k1.Liczba_prycz = (SELECT max(k2.liczba_prycz)
+FROM koszary k2));
+
+
+
+--d1
+--wypisz zolnierzy których pensja wynosi wiecej niz srednia pensja w ich oddziale
+SELECT z.oddzial_id_oddzialu, o.imie, o.nazwisko,  p.pensja 
+FROM ((osoba o
+INNER JOIN zolnierz z ON z.osoba_pesel = o.pesel)
+INNER JOIN pensja p ON p.osoba_pesel = o.pesel)
+WHERE p.pensja > (SELECT AVG(p1.pensja)
+FROM (( pensja p1
+INNER JOIN osoba o1 ON p1.osoba_pesel = o1.pesel)
+INNER JOIN zolnierz z1 ON z1.osoba_pesel = o1.pesel)
+WHERE z1.oddzial_id_oddzialu = z.oddzial_id_oddzialu)
+ORDER BY z.oddzial_id_oddzialu;
+
+--d2
+--WYPISZ BUDYNKI DO KTÓRYCH NIE JEST PRZYPISANY ŻADEN ODDZIAL
+SELECT k.nr_budynku
+FROM koszary k
+WHERE NOT EXISTS (SELECT 'anything'
+FROM oddzial o
+WHERE o.koszary_nr_budynku = k.nr_budynku);
+
+
+------------------------PLSQL----------------------------------------
+
+--zadanie 1
+--Napisz procedurę która będzie dodawać nowego zołnierza.Jeśli osoba o podanym numerze PESEL już istnieje w tabeli Osoba jako żołnierz,
+--to należy zaktualizować jej przypisany oddział na podany identyfikator oddziału
+--Jeśli osoba o podanym numerze PESEL jest obecnie cywilem sprzątającym koszary, to należy usunąć jej rekordy z tabeli Sprzata,
+--a następnie zmienić jej typ na żołnierz (Typ = 'zol') i przypisać ją do nowego oddziału o podanym identyfikatorze.
+--Jeśli osoba jest również zarejestrowana w tabeli Cywil, to należy usunąć jej rekord z tej tabeli.
+--Jeśli osoba o podanym numerze PESEL nie istnieje w tabeli Osoba, to należy dodać jej nowy rekord jako żołnierza (Typ = 'zol') w tabeli Osoba, 
+--przypisać ją do podanego oddziału oraz zarejestrować jej datę przysięgi jako bieżącą datę.
+--Dodatkowo, jeśli osoba jest przypadkiem zarejestrowana jako cywil w tabeli Cywil, to należy usunąć jej rekord z tej tabeli.
+
+CREATE OR REPLACE PROCEDURE DODAJ_ZOLNIERZA2 (
+  p_pesel IN Osoba.pesel%TYPE,
+  p_imie IN Osoba.imie%TYPE,
+  p_nazwisko IN Osoba.nazwisko%TYPE,
+  p_adres IN Osoba.adres%TYPE,
+  p_data_urodzenia IN Osoba.data_urodzenia%TYPE,
+  p_id_oddzialu IN Oddzial.ID_Oddzialu%TYPE
+) AS
+  v_typ Osoba.Typ%TYPE;
+BEGIN
+  SELECT Typ INTO v_typ FROM Osoba WHERE pesel = p_pesel;
+
+  IF v_typ = 'zol' THEN
+    
+    UPDATE Zolnierz SET Oddzial_ID_Oddzialu = p_id_oddzialu WHERE Osoba_pesel = p_pesel;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Przypisano żołnierzowi nowy oddział.');
+  ELSIF v_typ = 'cyw' THEN
+    
+    DECLARE
+      v_sprzata_count INTEGER;
+    BEGIN
+      SELECT COUNT(*) INTO v_sprzata_count FROM Sprzata WHERE Cywil_Osoba_pesel = p_pesel;
+      
+      IF v_sprzata_count > 0 THEN
+        
+        DELETE FROM Sprzata WHERE Cywil_Osoba_pesel = p_pesel;
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Usunięto rekordy z tabeli Sprzata.');
+      END IF;
+    END;
+    
+    
+    DECLARE
+      v_cywil_count INTEGER;
+    BEGIN
+      SELECT COUNT(*) INTO v_cywil_count FROM Cywil WHERE Osoba_pesel = p_pesel;
+      
+      IF v_cywil_count > 0 THEN
+        
+        DELETE FROM Cywil WHERE Osoba_pesel = p_pesel;
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Usunięto rekord z tabeli Cywil.');
+      END IF;
+    END;
+
+    
+    UPDATE Osoba SET Typ = 'zol' WHERE pesel = p_pesel;
+    INSERT INTO Zolnierz (Osoba_pesel, Oddzial_ID_Oddzialu, data_przysiegi)
+    VALUES (p_pesel, p_id_oddzialu, SYSDATE);
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Zmieniono typ osoby na żołnierz i dodano do tabeli Zolnierz.');
+  ELSE
+    
+    INSERT INTO Osoba (pesel, imie, nazwisko, adres, data_urodzenia, Typ)
+    VALUES (p_pesel, p_imie, p_nazwisko, p_adres, p_data_urodzenia, 'zol');
+
+    
+    DELETE FROM Cywil WHERE Osoba_pesel = p_pesel;
+
+    INSERT INTO Zolnierz (Osoba_pesel, Oddzial_ID_Oddzialu, data_przysiegi)
+    VALUES (p_pesel, p_id_oddzialu, SYSDATE);
+
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Dodano nowego żołnierza.');
+  END IF;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    
+    INSERT INTO Osoba (pesel, imie, nazwisko, adres, data_urodzenia, Typ)
+    VALUES (p_pesel, p_imie, p_nazwisko, p_adres, p_data_urodzenia, 'zol');
+
+    
+    DELETE FROM Cywil WHERE Osoba_pesel = p_pesel;
+
+    INSERT INTO Zolnierz (Osoba_pesel, Oddzial_ID_Oddzialu, data_przysiegi)
+    VALUES (p_pesel, p_id_oddzialu, SYSDATE);
+
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Dodano nowego żołnierza.');
+END;
+
+EXECUTE DODAJ_ZOLNIERZA2('12345678901', 'Jan', 'Kowalski', 'ul. Testowa 1, Warszawa', DATE '1990-01-01', 1);
+
+
+
+
+--ZADANIE 2
+--Napisz wyzwalacz który będzie sprawdzał po dodaniu albo upadacie rekordu, czy dana broń jest przypisana do innego żołnierza 
+
+create or replace TRIGGER SPRAWDZ_PRZYPISANIE_BRONI1
+AFTER INSERT OR UPDATE ON Zolnierz
+FOR EACH ROW
+DECLARE
+PRAGMA AUTONOMOUS_TRANSACTION;
+    v_count NUMBER;
+BEGIN
+    
+    SELECT COUNT(*) INTO v_count
+    FROM Zolnierz
+    WHERE Bron_id_broni = :NEW.Bron_id_broni
+    AND Osoba_pesel <> :NEW.Osoba_pesel;
+
+    IF v_count > 0 THEN
+       
+        RAISE_APPLICATION_ERROR(-20001, 'Dana broń jest już przypisana do innego żołnierza');
+    END IF;
+END;
+
+UPDATE ZOLNIERZ SET bron_id_broni = 2 WHERE osoba_pesel = 12345678901;
+UPDATE ZOLNIERZ SET bron_id_broni = 9 WHERE osoba_pesel = 12345678901;
+
+
+
+--zadanie 3
+--Napisz jeden wyzwalacz, który Jeśli jest wykonywane usuwanie, to wyzwalacz powinien sprawdzić, czy koszary, które są usuwane, są przypisane do jakiegoś oddziału lub są sprzątane przez cywili.
+--Jeśli tak, należy anulować operację i zgłosić błąd z odpowiednim komunikatem.
+--Jeśli jest wykonywane aktualizowanie, to wyzwalacz powinien sprawdzić, 
+--czy liczba prycz w koszarach po aktualizacji jest większa lub równa liczbie żołnierzy przypisanych do tych koszar (liczbie żołnierzy, których oddziały mają przypisane te koszary).
+--Jeśli liczba prycz jest mniejsza, należy anulować operację i zgłosić błąd z odpowiednim komunikatem.
+--Jeśli jest wykonywane dodawanie, to wyzwalacz powinien sprawdzić, czy liczba cywilów, którzy nie sprzątają żadnych koszar, jest większa niż 2. 
+--Jeśli liczba cywilów jest mniejsza lub równa 2, należy anulować operację i zgłosić błąd z odpowiednim komunikatem.
+
+CREATE OR REPLACE TRIGGER Bombo
+BEFORE DELETE OR INSERT OR UPDATE ON Koszary
+FOR EACH ROW
+DECLARE
+    v_oddzial_istnieje NUMBER;
+    v_cywil_sprzata NUMBER;
+    v_numer_budynku Koszary.NR_BUDYNKU%TYPE;
+    v_liczba_zolnierzy NUMBER;
+    v_liczba_cywilow NUMBER;
+BEGIN
+    IF DELETING THEN
+    SELECT COUNT(*) INTO v_oddzial_istnieje
+    FROM Oddzial
+    WHERE Koszary_nr_budynku = :OLD.nr_budynku;
+
+    
+    SELECT COUNT(*) INTO v_cywil_sprzata
+    FROM Sprzata
+    WHERE Koszary_nr_budynku = :OLD.nr_budynku;
+
+    IF v_oddzial_istnieje > 0 OR v_cywil_sprzata > 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Nie można usunąć koszar, ponieważ są przypisane do oddziału lub są sprzątane przez cywili.');
+    END IF;
+    
+    ELSIF UPDATING THEN
+    
+     
+    v_numer_budynku := :NEW.NR_BUDYNKU;
+    
+    
+    SELECT COUNT(*) INTO v_liczba_zolnierzy
+    FROM Zolnierz z JOIN Oddzial o ON z.ODDZIAL_ID_ODDZIALU = o.ID_ODDZIALU
+    WHERE o.koszary_NR_budynku = v_numer_budynku;
+    
+    IF :NEW.LICZBA_PRYCZ < v_liczba_zolnierzy THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Żołnierze nie będą mieli gdzie spać. Liczba prycz jest mniejsza niż liczba żołnierzy w przypisanych oddziałach.');
+    END IF;
+
+    ELSIF INSERTING THEN
+    
+     
+    SELECT COUNT(*) INTO v_liczba_cywilow
+    FROM Osoba
+    WHERE Typ = 'cyw' AND Pesel NOT IN (SELECT cywil_Osoba_pesel FROM Sprzata);
+
+    
+    IF v_liczba_cywilow <= 2 THEN
+        RAISE_APPLICATION_ERROR(-20003, 'Nie można dodać koszar, ponieważ liczba cywilów, którzy nie sprzątają żadnych koszar, jest mniejsza lub równa 2.');
+    END IF;
+    END IF;
+END;
+
+
+
+Insert into KOSZARY (NR_BUDYNKU,LICZBA_PRYCZ) values ('8','13');
+update koszary set liczba_prycz = 12 where nr_budynku = 1;
+delete FROM koszary WHERE nr_budynku = 8;
+
