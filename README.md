@@ -12,4 +12,4 @@ Zołnierz jest przypisany do jednego z oddziałów w bazie wojskowej.
 Żołnierz posiada może posiadać broń której id zawiera model oraz ilość naboi w magazynku. Oddział ma przypisany numer budynku koszar w którym śpią żołnierze.
 Cywile sprzątają wiele koszar.
 Cywil podobnie jak żołnierz posiada pensję.
-Encje żołnierz i cywil powinny być połączone z en
+Encje żołnierz i cywil powinny być połączone z encją osoba/człowiek.
