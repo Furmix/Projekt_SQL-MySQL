@@ -1,9 +1,10 @@
-Projekt polegał na wymyśłeniu bazy danych i wykonywanie poszczególnych zadań i wymagań.
+Projekt polegał na wymyśłeniu bazy danych, graficznym przedstawieniu tabelek oraz związków między nimi. 
+Następnie wykonywaliśmy zadania i wymagania na podstawie naszej bazy.
 Poniżej znajduję się opis mojej bazy danych.
 W drugim pliku znajdują się kod tworzenia tabel, inserty, zapytania, podzapytania oraz zadania z PLSQLa.
 
 
-BAZA WOJSKOWA
+BAZA WOJSKOWA: 
 Diagram przedstawia funkcjonowanie bazy wojskowej.
 Człowiek w bazie wojskowej może być żołnierzem albo pracującym cywilem, encja powinna zapisywać PESEL, imię, nazwisko, adres(ulice). datę przysięgi oraz typ funkcji którą pełni w bazie.
 Każdy żołnierz posiada pensję.
